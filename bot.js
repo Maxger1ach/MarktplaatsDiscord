@@ -14,7 +14,7 @@ const CLIENT_ID = process.env.CLIENT_ID;
 let trackingCategories = {};
 let lastListings = {};
 const CHECK_INTERVAL = 60 * 1000;
-let pingRole = ""; // Standaard geen ping
+let pingRole = "";
 const TRACKING_FILE = "tracking_data.json";
 
 // Load tracking data from file
@@ -40,9 +40,9 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 async function registerCommands() {
     try {
         await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-        console.log("✅ Slash commands geregistreerd (globaal)!");
+        console.log("Slash commands registered");
     } catch (error) {
-        console.error("❌ Fout bij registreren commands:", error);
+        console.error("❌ Error while registering commands:", error);
     }
 }
 
@@ -69,7 +69,7 @@ async function fetchListings(url) {
 
         return { listings, categoryName };
     } catch (error) {
-        console.error(`❌ Fout bij ophalen:`, error);
+        console.error(`❌ Error while recieving`, error);
         return { listings: [], categoryName: "Onbekend" };
     }
 }
@@ -86,14 +86,14 @@ async function checkForNewListings() {
         
         let channel = await client.channels.fetch(channelId);
         newListings.forEach(item => {
-            let message = `**Nieuwe Deal in ${category}!** 🔥\n\n📌 **${item.title}**\n💰 **€${item.price}**\n🔗 [Bekijk Advertentie](${item.link})`;
+            let message = `**New deal in ${category}!** 🔥\n\n📌 **${item.title}**\n💰 **€${item.price}**\n🔗 [Check Advertisement](${item.link})`;
             channel.send(message + (pingRole ? `\n${pingRole}` : ""));
         });
     }
 }
 
 client.once("ready", async () => {
-    console.log(`✅ Bot is online als ${client.user.tag}`);
+    console.log(`✅ Bot is online as ${client.user.tag}`);
     await registerCommands();
     setInterval(checkForNewListings, CHECK_INTERVAL);
 });
@@ -109,22 +109,22 @@ client.on("interactionCreate", async (interaction) => {
         let { categoryName } = await fetchListings(url);
         trackingCategories[url] = { channelId: interaction.channel.id, budget, category: categoryName };
         fs.writeFileSync(TRACKING_FILE, JSON.stringify(trackingCategories, null, 2));
-        await interaction.reply(`✅ **${categoryName}** wordt nu gevolgd${budget ? ` met een budget van €${budget}` : ""}`);
+        await interaction.reply(`✅ **${categoryName}** Is now being tracked${budget ? ` with a budget of€${budget}` : ""}`);
     }
 
     if (commandName === "list") {
         let trackedList = Object.values(trackingCategories).map(({ category, budget }) => `- **${category}**${budget ? ` (Max: €${budget})` : ""}`).join("\n");
-        await interaction.reply(trackedList ? `📌 **Getrackte categorieën:**\n${trackedList}` : "❌ Geen categorieën worden gevolgd.");
+        await interaction.reply(trackedList ? `📌 **Tracked categories:**\n${trackedList}` : "❌ No categories are followed, use /track.");
     }
 
     if (commandName === "pingrole") {
         let role = options.getRole("role");
         pingRole = role ? `<@&${role.id}>` : "";
-        await interaction.reply(`✅ Meldingen worden nu gestuurd naar: ${role}`);
+        await interaction.reply(`✅ Messages now ping: ${role}`);
     }
 
     if (commandName === "help") {
-        await interaction.reply("📢 **Marktplaats Sniper Help**\n\n💡 Stuur een bericht naar **M_0168** bij fouten.\n\n**Beschikbare commands:**\n- `/track` - Volg een Marktplaats categorie\n- `/untrack` - Stop met tracken van een categorie\n- `/list` - Bekijk alle getrackte categorieën\n- `/pingrole` - Stel een rol in voor meldingen");
+        await interaction.reply("📢 **Marktplaats Bot Help**\n\n💡 Send a message to **M_0168** is u catch any bugs.\n\n**Available commands:**\n- `/track` - Follow a marktplaats category\n- `/untrack` - Stop following a marktplaats category\n- `/list` - Check all following categories\n- `/pingrole` - add a role to ping for new ads");
     }
 });
 
