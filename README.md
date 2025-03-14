@@ -10,6 +10,13 @@ A Discord bot that tracks Marktplaats categories and notifies you when new listi
 - **Ping Role**: Set a role to get pings when there are new listings.
 - **Help**: Need info? Get a quick rundown of commands.
 
+## How to use?
+- Step 1: Download bot.js, tracking_data.json and package.json (also the .env)
+- Step 2: cd to the place u put them and run npm install
+- Step 3: fill in the .env file
+- Step 4: use a terminal to node bot.js
+- Step 5: use the commands and enjoy ur discord bot!
+
 ## Commands
 
 - `/track <url> [budget]`: Start tracking a Marktplaats category. Optionally set a budget to filter listings.
@@ -20,7 +27,7 @@ A Discord bot that tracks Marktplaats categories and notifies you when new listi
 
 ## How It Works
 
-Once you start tracking a category, the bot will keep an eye out for new listings. It checks every minute to see if there are any fresh deals that match the criteria (including your budget, if set). If it finds something new, it sends a message to your Discord channel with all the details.
+Once you start tracking a category, the bot will keep an eye out for new listings. It checks every minute to see if there are any deals that match the criteria (including your budget, if set). If it finds something new, it sends a message to your Discord channel with all the details.
 
 ## Example Commands
 
@@ -40,9 +47,3 @@ Once you start tracking a category, the bot will keep an eye out for new listing
 - `tracking_data.json`: Saves the categories you're tracking.
 - `.env`: Contains your bot token and client ID (keep this secret!).
 - `package.json`: Project dependencies and info.
-
-## License
-
-This project is under the MIT License. Do whatever you want with it.
-
----
