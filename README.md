@@ -11,7 +11,7 @@ A Discord bot that tracks Marktplaats categories and notifies you when new listi
 - **Help**: Need info? Get a quick rundown of commands.
 
 ## How to use?
-- Step 1: Download bot.js, tracking_data.json and package.json (also the .env)
+- Step 1: Download the repo
 - Step 2: cd to the place u put them and run npm install
 - Step 3: fill in the .env file
 - Step 4: use a terminal to node bot.js
