@@ -1,0 +1,15 @@
+{
+  "name": "marktplaats-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot that snipes Marktplaats deals and notifies your server.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.0.3",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12"
+  }
+}
